@@ -1,3 +1,7 @@
+document.getElementById("regarButton").addEventListener("click", function() {
+    waterPlant();
+   });
+   
 
 // importa a biblioteca easytimer.js
 var { Timer } = require("easytimer.js");
@@ -86,7 +90,7 @@ timer.start({
 });
 
 timer.addEventListener("secondTenthsUpdated", function (e) {
-    // Reduz o nível de água a cada 3 segundos
+    // Reduz o nível de água 
     if (timer.getTimeValues().secondTenths % 100 === 0) {
       plant.water -= 5;
       console.log("Nível de água reduzido! Água: " + plant.water);
