@@ -1,7 +1,4 @@
-document.getElementById("regarButton").addEventListener("click", function() {
-    waterPlant();
-   });
-   
+
 
 // importa a biblioteca easytimer.js
 var { Timer } = require("easytimer.js");
@@ -124,6 +121,8 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
+
+
 
 // função para receber o input do usuário
 function getUserInput() {
