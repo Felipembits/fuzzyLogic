@@ -2,8 +2,6 @@
 // importa a biblioteca easytimer.js
 var { Timer } = require("easytimer.js");
 
-
-
 var timer = new Timer();
 
 // cria um objeto para a planta
@@ -83,18 +81,27 @@ function giveFruit() {
 // Inicia o contador regressivo
 timer.start({
   precision: "seconds",
-  startValues: { seconds: 10 },
+  startValues: { seconds: 60 },
   countdown: true,
 });
 
-// Mostra o tempo restante a cada segundo nos últimos 5 segundos
 timer.addEventListener("secondTenthsUpdated", function (e) {
+    // Reduz o nível de água a cada 3 segundos
+    if (timer.getTimeValues().secondTenths % 100 === 0) {
+      plant.water -= 5;
+      console.log("Nível de água reduzido! Água: " + plant.water);
+    }
+  
+    if (timer.getTimeValues().secondTenths % 50 === 0) {
+      plant.care -= 2.5;
+      console.log("Nível de carinho reduzido! Carinho: " + plant.care);
+    }
+  
     // Mostrar os segundos apenas quando faltarem 5 segundos
     if (timer.getTimeValues().seconds <= 5) {
       console.log("Tempo restante: " + timer.getTimeValues().toString(['seconds']));
     }
   });
-
 // Quando o contador chegar a zero, chama a função para dar o fruto
 timer.addEventListener("targetAchieved", function (e) {
   giveFruit();
