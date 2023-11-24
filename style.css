@@ -150,5 +150,28 @@ body main section {
     border-radius: 5px;
     margin-bottom: .5rem;
     margin-top: .2rem;
+    background-color: #fff;
 }
 
+#comecar {
+    width: 18rem;
+    height: 3rem;
+    background-color: #fff;
+    border: 1px solid #333;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+
+#comecar:hover {
+    background-color: #333;
+    color: #fff;
+}

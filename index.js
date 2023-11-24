@@ -5,9 +5,7 @@ var plant = {
     satisfaction: 0,
   };
 
-
-
-document.getElementById("regarButton").addEventListener("click", function() {
+  document.getElementById("regarButton").addEventListener("click", function() {
     waterPlant();
     console.log("Planta regada! Água: " + plant.water);
    });
@@ -17,6 +15,25 @@ document.getElementById("brincarButton").addEventListener("click", function() {
     console.log("Planta cuidada! Carinho: " + plant.care);
    });
 
+   document.getElementById("comecar").addEventListener("click", function() {
+    startCountdown();
+ });
+
+ let countdown = 5;
+ let countdownInterval;
+ 
+ function startCountdown() {
+   countdownInterval = setInterval(function() {
+       countdown--;
+       document.getElementById("timer").innerHTML = countdown;
+       if (countdown === 0) {
+           giveFruit();
+           clearInterval(countdownInterval);
+           countdown = 5;
+       }
+   }, 1000);
+ }
+ 
 
 
 // cria um objeto para a planta

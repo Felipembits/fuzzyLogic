@@ -12,18 +12,17 @@
             <div class="plantoArea">
                 <h2>Planto</h2>
                 <img src="./assets/plantoTranquilo.png" alt="">
+                <div id="timer">60</div>
+                
                 <div class="agua">
                     <p>Água</p>
-                    <div class="aguaBarra Barra">
-                        <div class="aguaBarraProgresso"></div>
-                    </div>
+                    <div data-ls-module="progressBar" role="progressbar" aria-valuenow="60" class="aguaBarra Barra"></div>
                 </div>
                 <div class="alegria"> 
                     <p>Alegria</p>
-                    <div class="alegriaBarra Barra">
-                        <div class="alegriaBarraProgresso"></div>
-                    </div>
+                    <div data-ls-module="progressBar" role="progressbar" aria-valuenow="60" class="alegriaBarra Barra"></div>
                 </div>
+                <div id="comecar" class="Barra">Começar</div>
                 <div class="plantoButtons">
                     <button class="brincarButton" id="brincarButton">Brincar</button>
                     <button class="regarButton" id="regarButton">Regar</button>
