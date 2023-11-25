@@ -11,6 +11,7 @@ let care = plant.care;
 let end = false;
 let countdown = 10;
 let countdownInterval;
+let defuzzificou = false
 
 const value_bar_care = document.getElementById("loadingLabelCare");
 value_bar_care.setAttribute("value", care);
@@ -132,7 +133,6 @@ function carePlant() {
   value_bar_care.setAttribute("value", plant.care);
   }
 }
-let defuzzificou = false
 
 // função para definir o tipo de fruto gerado
 function giveFruit() {
