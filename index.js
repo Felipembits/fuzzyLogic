@@ -34,56 +34,65 @@ document.getElementById("comecar").addEventListener("click", function () {
     startCountdown();
     waterDamage();
   } else if (morto) {
-    plant.water = 50;
-    plant.care = 50;
-    value_bar_water.setAttribute("value", plant.water);
-    value_bar_care.setAttribute("value", plant.care);
-    document.getElementById("foto").setAttribute("src", "./assets/planto.png");
     morto = false;
-    startCountdown();
-    waterDamage();
-    countdown = 60;
+    window.location.reload();
   }
 });
 
 function startCountdown() {
   countdownInterval = setInterval(function () {
-    if (plant.water < 30 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water != 100) {
+    if (plant.water < 30 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water < 100) {
+      console.log(plant.water, "else if 1");
       emExecucao = false;
       countdown--;
       document.getElementById("timer").innerHTML = countdown;
       document.getElementById("foto").setAttribute("src", "./assets/plantoCheiDiOdio.png");
-    } else if (plant.care < 30 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water != 100) {
+    } else if (plant.care < 30 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water < 100) {
+      console.log(plant.water, "else if 2");
+
       emExecucao = false;
       countdown--;
       document.getElementById("timer").innerHTML = countdown;
       document.getElementById("foto").setAttribute("src", "./assets/plantoCarente.png");
     } 
-     else if (plant.care > 70 && plant.water < 60 && plant.water >= 50 && plant.care != 0 && countdown > 0 && plant.water != 100) {
+     else if (plant.care > 70 && plant.water < 60 && plant.water >= 50 && plant.care != 0 && countdown > 0 && plant.water < 100) {
+      console.log(plant.water, "else if 3");
+
       emExecucao = false;
       countdown--;
       document.getElementById("timer").innerHTML = countdown;
       document.getElementById("foto").setAttribute("src", "./assets/plantoForte.png");
     }
-    else if (plant.care > 70 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water != 100) {
+    else if (plant.care > 70 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water < 100) {
+      console.log(plant.water, "else if 4");
+
       emExecucao = false;
       countdown--;
       document.getElementById("timer").innerHTML = countdown;
       document.getElementById("foto").setAttribute("src", "./assets/plantoCoracao.png");
     }  
-    else if (plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water != 100) {
+    else if (plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water < 100) {
+      console.log(plant.water, "else if 5");
+
       emExecucao = false;
       countdown--;
       document.getElementById("timer").innerHTML = countdown;
       document.getElementById("foto").setAttribute("src", "./assets/plantoTranquilo.png");
     } 
-    else if (countdown == 0 ) {
+    else if (countdown == 0 &&  plant.water < 100) {
+      console.log(plant.water, "else if 6");
+
       giveFruit();
       clearInterval(countdownInterval);
       emExecucao = true;
     }
-    else if (plant.water == 0 || plant.care == 0 || plant.water >= 99) {
-      restartGame();
+    else if (plant.water == 0 || plant.care == 0 || plant.water >= 100 || plant.care ) {
+      console.log(plant.water, "else if 7");
+      clearInterval(countdownInterval);
+      morto = true;
+      emExecucao = true;
+      document.getElementById("foto").setAttribute("src", "./assets/plantoMorto.png");
+      
     }
   }, 1000);
 }
@@ -91,16 +100,11 @@ function startCountdown() {
 const restartButton = document.getElementById("restartButton");
 restartButton.addEventListener("click", () => window.location.reload());
 
-function restartGame() {
-  clearInterval(countdownInterval);
-  morto = true;
-  emExecucao = true;
-  document.getElementById("foto").setAttribute("src", "./assets/plantoMorto.png");
-}
+
 
 function careDamageTwo() {
   careInterval = setInterval(function () {
-    if (plant.care > 0) {
+    if (plant.care > 0 && morto == false) {  
       plant.water -= 5;
       plant.care -= 7.5;
       value_bar_water.setAttribute("value", plant.water);
@@ -113,7 +117,7 @@ function careDamageTwo() {
 
 function waterDamage() {
   waterInterval = setInterval(function () {
-    if (plant.water > 0) {
+    if (plant.water > 0 && morto == false) {
       plant.water -= 10;
       plant.care -= 5;
       value_bar_water.setAttribute("value", plant.water);
@@ -163,7 +167,7 @@ function fuzzify() {
   else if (plant.water > 65 && plant.water <= 85) {
     waterSatisfaction = "Molhado";
   }
-  else if (plant.water > 85 && plant.water <= 100) {
+  else if (plant.water > 85 && plant.water < 100) {
     waterSatisfaction = "Encharcado";
   }
 
@@ -179,14 +183,14 @@ function fuzzify() {
   else if (plant.care > 65 && plant.care <= 85) {
     careSatisfaction = "Muito Feliz";
   }
-  else if (plant.care > 85 && plant.care <= 100) {
+  else if (plant.care > 85 && plant.care < 100) {
     careSatisfaction = "Radiante";
   }
 }
 
 function defuzzify() {
  if (careSatisfaction == "Triste" && waterSatisfaction == "Desidratado") {
-      plant.fruit = "Podre";
+     plant.fruit = "Podre";
   }
  else if (careSatisfaction == "Feliz" && waterSatisfaction == "Desidratado") {
      plant.fruit = "Podre";
