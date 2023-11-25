@@ -154,7 +154,7 @@ function fuzzify() {
   if (plant.water < 5) {
     waterSatisfaction = "Seco";
   }
-  else if (plant.water > 5 && plant.water <= 29) {
+  else if (plant.water >= 5 && plant.water <= 29) {
     waterSatisfaction = "Desidratado";
   }
   else if (plant.water > 29 && plant.water <= 65) {
@@ -170,7 +170,7 @@ function fuzzify() {
   if (plant.care < 5) {
     careSatisfaction = "Abandonado";
   }
-  else if (plant.care > 5 && plant.care <= 29) {
+  else if (plant.care >= 5 && plant.care <= 29) {
     careSatisfaction = "Triste";
   }
   else if (plant.care > 29 && plant.care <= 65) {
@@ -185,8 +185,10 @@ function fuzzify() {
 }
 
 function defuzzify() {
-    
- if (careSatisfaction == "Feliz" && waterSatisfaction == "Desidratado") {
+ if (careSatisfaction == "Triste" && waterSatisfaction == "Desidratado") {
+      plant.fruit = "Podre";
+  }
+ else if (careSatisfaction == "Feliz" && waterSatisfaction == "Desidratado") {
      plant.fruit = "Podre";
  } else if (careSatisfaction == "Muito feliz" && waterSatisfaction == "Desidratado") {
      plant.fruit = "Bronze";
@@ -209,7 +211,7 @@ function defuzzify() {
  } else if (careSatisfaction == "Radiante" && waterSatisfaction == "Molhado") {
      plant.fruit = "Dourado";
  } else {
-      plant.fruit = "Sem fruto";
+      plant.fruit = "Podre";
  }
   defuzzificou = true
  
