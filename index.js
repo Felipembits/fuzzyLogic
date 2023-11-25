@@ -1,8 +1,9 @@
 var plant = {
-  water: 30,
-  care: 30,
+  water: 50,
+  care: 50,
   fruit: "none",
-  satisfaction: 0,
+  waterSatisfaction: "",
+  careSatisfaction: "",
 };
 let emExecucao = true;
 let morto = false;
@@ -28,11 +29,13 @@ document.getElementById("brincarButton").addEventListener("click", function () {
 
 document.getElementById("comecar").addEventListener("click", function () {
   if (emExecucao) {
+    plant.water = 50;
+    plant.care = 50;
     startCountdown();
     waterDamage();
   } else if (morto) {
-    plant.water = 30;
-    plant.care = 30;
+    plant.water = 50;
+    plant.care = 50;
     value_bar_water.setAttribute("value", plant.water);
     value_bar_care.setAttribute("value", plant.care);
     document.getElementById("foto").setAttribute("src", "./assets/planto.png");
@@ -45,34 +48,41 @@ document.getElementById("comecar").addEventListener("click", function () {
 
 function startCountdown() {
   countdownInterval = setInterval(function () {
-    if (plant.water < 30 && plant.water != 0 && plant.care != 0 && countdown > 0) {
+    if (plant.water < 30 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water != 100) {
       emExecucao = false;
       countdown--;
       document.getElementById("timer").innerHTML = countdown;
-      document
-        .getElementById("foto")
-        .setAttribute("src", "./assets/plantoCheiDiOdio.png");
-    } else if (plant.care < 30 && plant.water != 0 && plant.care != 0 && countdown > 0) {
+      document.getElementById("foto").setAttribute("src", "./assets/plantoCheiDiOdio.png");
+    } else if (plant.care < 30 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water != 100) {
       emExecucao = false;
       countdown--;
       document.getElementById("timer").innerHTML = countdown;
-      document
-        .getElementById("foto")
-        .setAttribute("src", "./assets/plantoCarente.png");
-    } else if (plant.water != 0 && plant.care != 0 && countdown > 0) {
+      document.getElementById("foto").setAttribute("src", "./assets/plantoCarente.png");
+    } 
+     else if (plant.care > 70 && plant.water < 60 && plant.water >= 50 && plant.care != 0 && countdown > 0 && plant.water != 100) {
       emExecucao = false;
       countdown--;
       document.getElementById("timer").innerHTML = countdown;
-      document
-        .getElementById("foto")
-        .setAttribute("src", "./assets/plantoTranquilo.png");
-    } else if (countdown == 0) {
+      document.getElementById("foto").setAttribute("src", "./assets/plantoForte.png");
+    }
+    else if (plant.care > 70 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water != 100) {
+      emExecucao = false;
+      countdown--;
+      document.getElementById("timer").innerHTML = countdown;
+      document.getElementById("foto").setAttribute("src", "./assets/plantoCoracao.png");
+    }  
+    else if (plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water != 100) {
+      emExecucao = false;
+      countdown--;
+      document.getElementById("timer").innerHTML = countdown;
+      document.getElementById("foto").setAttribute("src", "./assets/plantoTranquilo.png");
+    } 
+    else if (countdown == 0 ) {
       giveFruit();
       clearInterval(countdownInterval);
-      countdown = 60;
       emExecucao = true;
     }
-    else if (plant.water == 0 || plant.care == 0) {
+    else if (plant.water == 0 || plant.care == 0 || plant.water >= 99) {
       restartGame();
     }
   }, 1000);
@@ -88,7 +98,7 @@ function restartGame() {
   document.getElementById("foto").setAttribute("src", "./assets/plantoMorto.png");
 }
 
-function careDamage() {
+function careDamageTwo() {
   careInterval = setInterval(function () {
     if (plant.care > 0) {
       plant.water -= 5;
@@ -128,56 +138,79 @@ function carePlant() {
   plant.care += 5;
   value_bar_care.setAttribute("value", plant.care);
 }
-
+let defuzzificou = false
 // função para definir o tipo de fruto gerado
 function giveFruit() {
-  if (morto == false) {
-    waterSatisfaction = 0;
-    careSatisfaction = 0;
-
-    if (
-      (plant.water > 0 && plant.water < 10) ||
-      (plant.water >= 40 && plant.water < 50) ||
-      plant.water >= 50
-    ) {
-      waterSatisfaction = 10;
-    } else if ((plant.water >= 10 && plant.water <= 20) || plant.water > 30) {
-      waterSatisfaction = 30;
-    } else if (plant.water > 20 && plant.water <= 30) {
-      waterSatisfaction = 50;
-    }
-    if (
-      (plant.care >= 0 && plant.care < 10) ||
-      (plant.care >= 40 && plant.care < 50) ||
-      plant.care >= 50
-    ) {
-      careSatisfaction = 10;
-    } else if ((plant.care >= 10 && plant.care <= 20) || plant.care > 30) {
-      careSatisfaction = 30;
-    } else if (plant.care > 20 && plant.care <= 30) {
-      careSatisfaction = 50;
-    }
-
-    // condições para determinar o tipo de fruto
-    plant.satisfaction = waterSatisfaction + careSatisfaction;
-    console.log("Satisfação: " + plant.satisfaction);
-    console.log("Agua: " + plant.water);
-    console.log("Carinho: " + plant.care);
-    console.log("waterSatisfaction: " + waterSatisfaction);
-    console.log("careSatisfaction: " + careSatisfaction);
-    if (plant.satisfaction >= 80) {
-      plant.fruit = "dourado";
-    } else if (plant.satisfaction >= 50) {
-      plant.fruit = "prata";
-    } else if (plant.satisfaction > 40) {
-      plant.fruit = "bronze";
-    } else {
-      plant.fruit = "podre";
-    }
-
-    alert("Fruto dado: " + plant.fruit);
-    plant.satisfaction = 0;
-
-    plant.fruitGiven = true;
+  
+  fuzzify();
+  defuzzify();
+  if(defuzzificou){
+    alert("Fruto: " + plant.fruit);
+    window.location.reload()
   }
+}
+
+function fuzzify() {
+  if (plant.water < 5) {
+    waterSatisfaction = "Seco";
+  }
+  else if (plant.water > 5 && plant.water <= 29) {
+    waterSatisfaction = "Desidratado";
+  }
+  else if (plant.water > 29 && plant.water <= 65) {
+    waterSatisfaction = "Hidratado";
+  }
+  else if (plant.water > 65 && plant.water <= 85) {
+    waterSatisfaction = "Molhado";
+  }
+  else if (plant.water > 85 && plant.water <= 100) {
+    waterSatisfaction = "Encharcado";
+  }
+
+  if (plant.care < 5) {
+    careSatisfaction = "Abandonado";
+  }
+  else if (plant.care > 5 && plant.care <= 29) {
+    careSatisfaction = "Triste";
+  }
+  else if (plant.care > 29 && plant.care <= 65) {
+    careSatisfaction = "Feliz";
+  }
+  else if (plant.care > 65 && plant.care <= 85) {
+    careSatisfaction = "Muito Feliz";
+  }
+  else if (plant.care > 85 && plant.care <= 100) {
+    careSatisfaction = "Radiante";
+  }
+}
+
+function defuzzify() {
+    
+ if (careSatisfaction == "Feliz" && waterSatisfaction == "Desidratado") {
+     plant.fruit = "Podre";
+ } else if (careSatisfaction == "Muito feliz" && waterSatisfaction == "Desidratado") {
+     plant.fruit = "Bronze";
+ } else if (careSatisfaction == "Radiante" && waterSatisfaction == "Desidratado") {
+     plant.fruit = "Prata";
+ } else if (careSatisfaction == "Triste" && waterSatisfaction == "Hidratado") {
+     plant.fruit = "Podre";
+ } else if (careSatisfaction == "Feliz" && waterSatisfaction == "Hidratado") {
+     plant.fruit = "Bronze";
+ } else if (careSatisfaction == "Muito feliz" && waterSatisfaction == "Hidratado") {
+     plant.fruit = "Prata";
+ } else if (careSatisfaction == "Radiante" && waterSatisfaction == "Hidratado") {
+     plant.fruit = "Dourado";
+ } else if (careSatisfaction == "Triste" && waterSatisfaction == "Molhado") {
+     plant.fruit = "Podre";
+ } else if (careSatisfaction == "Feliz" && waterSatisfaction == "Molhado") {
+     plant.fruit = "Bronze";
+ } else if (careSatisfaction == "Muito feliz" && waterSatisfaction == "Molhado") {
+     plant.fruit = "Prata";
+ } else if (careSatisfaction == "Radiante" && waterSatisfaction == "Molhado") {
+     plant.fruit = "Dourado";
+ } else {
+      plant.fruit = "Sem fruto";
+ }
+  defuzzificou = true
+ 
 }
