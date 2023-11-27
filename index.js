@@ -160,7 +160,7 @@ function fuzzify() {
   else if (plant.water > 65 && plant.water <= 85) {
     plant.waterSatisfaction = "Molhado";
   }
-  else if (plant.water > 85 && plant.water < 100) {
+  else if (plant.water > 85 && plant.water <= 100 || plant.water > 100) {
     plant.waterSatisfaction = "Encharcado";
   }
 
