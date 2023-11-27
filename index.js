@@ -138,8 +138,6 @@ function carePlant() {
 // função para definir o tipo de fruto gerado
 function giveFruit() {
   end = true;
-  plant.care = 70
-  plant.water = 50
   fuzzify();
   defuzzify();
   if(defuzzificou){
