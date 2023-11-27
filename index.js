@@ -10,9 +10,12 @@ let emExecucao = false;
 let morto = false;
 let care = plant.care;
 let end = false;
-let countdown = 20
+let countdown = 20;
 let countdownInterval;
 let defuzzificou = false
+
+const foto = document.getElementById("foto")
+const timer = document.getElementById("timer");
 
 const value_bar_care = document.getElementById("loadingLabelCare");
 value_bar_care.setAttribute("value", care);
@@ -22,85 +25,91 @@ const value_bar_water = document.getElementById("loadingLabelWater");
 value_bar_water.setAttribute("value", water);
 
 document.getElementById("regarButton").addEventListener("click", function () {
-  waterPlant();
+  if(end == false && morto == false && emExecucao == true && plant.water <= 100) {
+    plant.water += 5;
+    const value_bar_water = document.getElementById("loadingLabelWater");
+    value_bar_water.setAttribute("value", plant.water);
+    }
 });
 
 document.getElementById("brincarButton").addEventListener("click", function () {
-  carePlant();
+  if(end == false && morto == false && emExecucao == true && plant.care < 100) {
+    plant.care += 5;
+    value_bar_care.setAttribute("value", plant.care);
+    }
 });
 
 
 function startCountdown() {
     emExecucao = true;
+
     countdownInterval = setInterval(function () {
-    if (plant.water < 30 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water < 100) {
-      countdown--;
-      document.getElementById("timer").innerHTML = countdown;
-      document.getElementById("foto").setAttribute("src", "./assets/plantoCheiDiOdio.png");
-    } else if (plant.care < 30 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water < 100) {
 
-      countdown--;
-      document.getElementById("timer").innerHTML = countdown;
-      document.getElementById("foto").setAttribute("src", "./assets/plantoCarente.png");
-    } 
-     else if (plant.care > 70 && plant.water < 60 && plant.water >= 50 && plant.care != 0 && countdown > 0 && plant.water < 100) {
-
-      countdown--;
-      document.getElementById("timer").innerHTML = countdown;
-      document.getElementById("foto").setAttribute("src", "./assets/plantoForte.png");
-    }
-    else if (plant.care > 70 && plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water < 100) {
-
-      countdown--;
-      document.getElementById("timer").innerHTML = countdown;
-      document.getElementById("foto").setAttribute("src", "./assets/plantoCoracao.png");
-    }  
-    else if (plant.water != 0 && plant.care != 0 && countdown > 0 && plant.water < 100) {
-
-      countdown--;
-      document.getElementById("timer").innerHTML = countdown;
-      document.getElementById("foto").setAttribute("src", "./assets/plantoTranquilo.png");
-    } 
-    else if (countdown == 0 && plant.water < 100) {
-
-      giveFruit();
-      clearInterval(countdownInterval);
-    }
-    else if (plant.water < 5 || plant.care < 5 || plant.water >= 100) {
-      clearInterval(countdownInterval);
-      morto = true;
-      document.getElementById("foto").setAttribute("src", "./assets/plantoMorto.png");
-      document.getElementById("comecar").innerHTML = "Recomeçar";
-      giveFruit();
-    }
+      if (plant.water < 5 || plant.care < 5 || plant.water >= 100) {
+        clearInterval(countdownInterval);
+        morto = true;
+        foto.setAttribute("src", "./assets/plantoMorto.png");
+        document.getElementById("comecar").innerHTML = "Recomeçar";
+        giveFruit();
+      } 
+       else if (countdown == 0 && plant.water < 100) {
+        giveFruit();
+        clearInterval(countdownInterval);
+      }
+       else if (plant.care < 30) {
+    
+        countdown--;
+        timer.innerHTML = countdown;
+        foto.setAttribute("src", "./assets/plantoCarente.png");
+      } 
+       else if (plant.care > 70 && plant.water < 60 && plant.water >= 50) {
+    
+        countdown--;
+        timer.innerHTML = countdown;
+        foto.setAttribute("src", "./assets/plantoForte.png");
+      }
+      else if (plant.care > 70) {
+    
+        countdown--;
+        timer.innerHTML = countdown;
+        foto.setAttribute("src", "./assets/plantoCoracao.png");
+      }  
+      else if (plant.water < 30) {
+        countdown--;
+        timer.innerHTML = countdown;
+        foto.setAttribute("src", "./assets/plantoCheiDiOdio.png");
+      }
+      else {
+        countdown--;
+        timer.innerHTML = countdown;
+        foto.setAttribute("src", "./assets/plantoTranquilo.png");
+      } 
   }, 1000);
 }
 
 
 document.getElementById("comecar").addEventListener("click", function () {
   if (emExecucao == false && morto == false) {
-    plant.water = 50;
-    plant.care = 50;
+
     startCountdown();
     waterDamage();
+    careDamage();
   } else if (morto || end) {
     window.location.reload();
   }
 });
 
-
-
-function careDamageTwo() {
+function careDamage() {
   careInterval = setInterval(function () {
-    if (plant.care > 0 && morto == false && end == false) {  
-      plant.water -= 5;
-      plant.care -= 7.5;
-      value_bar_water.setAttribute("value", plant.water);
+    if (morto == false && end == false) {
+      if (plant.water < 30 || plant.water >= 65) {
+      plant.care -= 10;
       value_bar_care.setAttribute("value", plant.care);
+      }
     } else {
       clearInterval(careInterval);
     }
-  }, 2000);
+  }, 1000);
 }
 
 function waterDamage() {
@@ -116,106 +125,91 @@ function waterDamage() {
   }, 1000);
 }
 
-// cria um objeto para a planta
-
-// função para regar a planta
-function waterPlant() {
-  if(end == false && morto == false && emExecucao == true && plant.water < 100) {
-  plant.water += 5;
-  const value_bar_water = document.getElementById("loadingLabelWater");
-  value_bar_water.setAttribute("value", plant.water);
-  }
-}
-
-// função para dar carinho à planta
-function carePlant() {
-  if(end == false && morto == false && emExecucao == true && plant.care < 100) {
-  plant.care += 5;
-  value_bar_care.setAttribute("value", plant.care);
-  }
-}
-
-// função para definir o tipo de fruto gerado
 function giveFruit() {
   end = true;
-  fuzzify();
-  defuzzify();
+  
+  fuzzify(plant);
+  defuzzify(plant);
   if(defuzzificou){
-    //alert("Fruto: " + plant.fruit);
+
     document.getElementById("comecar").innerHTML = "Recomeçar";
     clickButtonModalFruit();
   }
 }
 
-function fuzzify() {
-  if (plant.water < 5) {
+function fuzzify(plant) {
+  const waterLevels = {
+    seco: 5,
+    desidratado: 29,
+    hidratado: 65,
+    molhado: 85,
+    encharcado: 100,
+  };
+
+  const careLevels = {
+    abandonado: 5,
+    triste: 29,
+    feliz: 65,
+    muitoFeliz: 85,
+    radiante: 100,
+  };
+
+  if (plant.water < waterLevels.seco) {
     plant.waterSatisfaction = "Seco";
-  }
-  else if (plant.water >= 5 && plant.water <= 29) {
+  } else if (plant.water <= waterLevels.desidratado) {
     plant.waterSatisfaction = "Desidratado";
-  }
-  else if (plant.water > 29 && plant.water <= 65) {
+  } else if (plant.water <= waterLevels.hidratado) {
     plant.waterSatisfaction = "Hidratado";
-  }
-  else if (plant.water > 65 && plant.water <= 85) {
+  } else if (plant.water <= waterLevels.molhado) {
     plant.waterSatisfaction = "Molhado";
-  }
-  else if (plant.water > 85 && plant.water <= 100 || plant.water > 100) {
+  } else {
     plant.waterSatisfaction = "Encharcado";
   }
 
-  if (plant.care < 5) {
-    plant.careSatisfaction = "Abandonado";
-  }
-  else if (plant.care >= 5 && plant.care <= 29) {
-    plant.careSatisfaction = "Triste";
-  }
-  else if (plant.care > 29 && plant.care <= 65) {
-    plant.careSatisfaction = "Feliz";
-  }
-  else if (plant.care > 65 && plant.care <= 85) {
-    plant.careSatisfaction = "Muito Feliz";
-  }
-  else if (plant.care > 85) {
-    plant.careSatisfaction = "Radiante";
+  if (plant.care < careLevels.abandonado) {
+    plant.careSatisfaction = "abandonado";
+  } else if (plant.care <= careLevels.triste) {
+    plant.careSatisfaction = "triste";
+  } else if (plant.care <= careLevels.feliz) {
+    plant.careSatisfaction = "feliz";
+  } else if (plant.care <= careLevels.muitoFeliz) {
+    plant.careSatisfaction = "muitoFeliz";
+  } else {
+    plant.careSatisfaction = "radiante";
   }
 }
 
-function defuzzify() {
- if (plant.careSatisfaction == "Triste" && plant.waterSatisfaction == "Desidratado") {
-     plant.fruit = "Podre";
-  }
- else if (plant.careSatisfaction == "Feliz" && plant.waterSatisfaction == "Desidratado") {
-     plant.fruit = "Podre";
- } else if (plant.careSatisfaction == "Muito Feliz" && plant.waterSatisfaction == "Desidratado") {
-     plant.fruit = "Bronze";
- } else if (plant.careSatisfaction == "Radiante" && plant.waterSatisfaction == "Desidratado") {
-     plant.fruit = "Prata";
- } else if (plant.careSatisfaction == "Triste" && plant.waterSatisfaction == "Hidratado") {
-     plant.fruit = "Podre";
- } else if (plant.careSatisfaction == "Feliz" && plant.waterSatisfaction == "Hidratado") {
-     plant.fruit = "Bronze";
- } else if (plant.careSatisfaction == "Muito Feliz" && plant.waterSatisfaction == "Hidratado") {
-     plant.fruit = "Prata";
- } else if (plant.careSatisfaction == "Radiante" && plant.waterSatisfaction == "Hidratado") {
-     plant.fruit = "Dourado";
- } else if (plant.careSatisfaction == "Triste" && plant.waterSatisfaction == "Molhado") {
-     plant.fruit = "Podre";
- } else if (plant.careSatisfaction == "Feliz" && plant.waterSatisfaction == "Molhado") {
-     plant.fruit = "Bronze";
- } else if (plant.careSatisfaction == "Muito Feliz" && plant.waterSatisfaction == "Molhado") {
-     plant.fruit = "Prata";
- } else if (plant.careSatisfaction == "Radiante" && plant.waterSatisfaction == "Molhado") {
-     plant.fruit = "Dourado";
+function defuzzify(plant) {
+  const fruitResult = {
+    tristeDesidratado: "Podre",
+    felizDesidratado: "Podre",
+    muitoFelizDesidratado: "Bronze",
+    radianteDesidratado: "Prata",
+    tristeHidratado: "Podre",
+    felizHidratado: "Bronze",
+    muitoFelizHidratado: "Prata",
+    radianteHidratado: "Dourado",
+    tristeMolhado: "Podre",
+    felizMolhado: "Bronze",
+    muitoFelizMolhado: "Prata",
+    radianteMolhado: "Dourado",
+    morto: "Nenhum fruto",
+    default: "Podre",
+  };
+
+  const key = `${plant.careSatisfaction}${plant.waterSatisfaction}`;
+
+  if (key in fruitResult) {
+    plant.fruit = fruitResult[key];
   } else if (morto) {
-     plant.fruit = "Nenhum fruto";
- } else {
-      plant.fruit = "Podre";
-      defuzzificou = true
- }
-  defuzzificou = true
- 
+    plant.fruit = fruitResult.morto;
+  }
+  else {
+    plant.fruit = fruitResult.default;
+  }
+  defuzzificou = true;
 }
+
 
 function clickButtonModalFruit() {
   if (plant.fruit == "none") {
