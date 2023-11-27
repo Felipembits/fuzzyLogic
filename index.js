@@ -10,7 +10,7 @@ let emExecucao = false;
 let morto = false;
 let care = plant.care;
 let end = false;
-let countdown = 15
+let countdown = 2
 let countdownInterval;
 let defuzzificou = false
 
@@ -138,6 +138,8 @@ function carePlant() {
 // função para definir o tipo de fruto gerado
 function giveFruit() {
   end = true;
+  plant.care = 70
+  plant.water = 50
   fuzzify();
   defuzzify();
   if(defuzzificou){
@@ -187,7 +189,7 @@ function defuzzify() {
   }
  else if (plant.careSatisfaction == "Feliz" && plant.waterSatisfaction == "Desidratado") {
      plant.fruit = "Podre";
- } else if (plant.careSatisfaction == "Muito feliz" && plant.waterSatisfaction == "Desidratado") {
+ } else if (plant.careSatisfaction == "Muito Feliz" && plant.waterSatisfaction == "Desidratado") {
      plant.fruit = "Bronze";
  } else if (plant.careSatisfaction == "Radiante" && plant.waterSatisfaction == "Desidratado") {
      plant.fruit = "Prata";
@@ -195,7 +197,7 @@ function defuzzify() {
      plant.fruit = "Podre";
  } else if (plant.careSatisfaction == "Feliz" && plant.waterSatisfaction == "Hidratado") {
      plant.fruit = "Bronze";
- } else if (plant.careSatisfaction == "Muito feliz" && plant.waterSatisfaction == "Hidratado") {
+ } else if (plant.careSatisfaction == "Muito Feliz" && plant.waterSatisfaction == "Hidratado") {
      plant.fruit = "Prata";
  } else if (plant.careSatisfaction == "Radiante" && plant.waterSatisfaction == "Hidratado") {
      plant.fruit = "Dourado";
@@ -203,7 +205,7 @@ function defuzzify() {
      plant.fruit = "Podre";
  } else if (plant.careSatisfaction == "Feliz" && plant.waterSatisfaction == "Molhado") {
      plant.fruit = "Bronze";
- } else if (plant.careSatisfaction == "Muito feliz" && plant.waterSatisfaction == "Molhado") {
+ } else if (plant.careSatisfaction == "Muito Feliz" && plant.waterSatisfaction == "Molhado") {
      plant.fruit = "Prata";
  } else if (plant.careSatisfaction == "Radiante" && plant.waterSatisfaction == "Molhado") {
      plant.fruit = "Dourado";
