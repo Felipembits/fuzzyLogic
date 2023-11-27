@@ -10,7 +10,7 @@ let emExecucao = false;
 let morto = false;
 let care = plant.care;
 let end = false;
-let countdown = 20
+let countdown = 15
 let countdownInterval;
 let defuzzificou = false
 
@@ -176,7 +176,7 @@ function fuzzify() {
   else if (plant.care > 65 && plant.care <= 85) {
     plant.careSatisfaction = "Muito Feliz";
   }
-  else if (plant.care > 85 && plant.care < 100) {
+  else if (plant.care > 85) {
     plant.careSatisfaction = "Radiante";
   }
 }
