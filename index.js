@@ -10,7 +10,7 @@ let emExecucao = false;
 let morto = false;
 let care = plant.care;
 let end = false;
-let countdown = 2
+let countdown = 20
 let countdownInterval;
 let defuzzificou = false
 
