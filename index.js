@@ -42,13 +42,13 @@ document.getElementById("brincarButton").addEventListener("click", function () {
 
 function startCountdown() {
     emExecucao = true;
-
+    let plantoImage = "plantoTranquilo";
     countdownInterval = setInterval(function () {
 
       if (plant.water < 5 || plant.care < 5 || plant.water >= 100) {
         clearInterval(countdownInterval);
         morto = true;
-        foto.setAttribute("src", "./assets/plantoMorto.png");
+        plantoImage = "plantoMorto";
         document.getElementById("comecar").innerHTML = "Recomeçar";
         giveFruit();
       } 
@@ -60,30 +60,31 @@ function startCountdown() {
     
         countdown--;
         timer.innerHTML = countdown;
-        foto.setAttribute("src", "./assets/plantoCarente.png");
+        plantoImage = "plantoCarente";
       } 
        else if (plant.care > 70 && plant.water < 60 && plant.water >= 50) {
     
         countdown--;
         timer.innerHTML = countdown;
-        foto.setAttribute("src", "./assets/plantoForte.png");
+        plantoImage = "plantoForte";
       }
       else if (plant.care > 70) {
     
         countdown--;
         timer.innerHTML = countdown;
-        foto.setAttribute("src", "./assets/plantoCoracao.png");
+        plantoImage = "plantoCoracao";
       }  
       else if (plant.water < 30) {
         countdown--;
         timer.innerHTML = countdown;
-        foto.setAttribute("src", "./assets/plantoCheiDiOdio.png");
+        plantoImage = "plantoCheiDiOdio";
       }
       else {
         countdown--;
         timer.innerHTML = countdown;
-        foto.setAttribute("src", "./assets/plantoTranquilo.png");
-      } 
+        plantoImage = "plantoTranquilo";
+      }
+      foto.setAttribute("src", `./assets/${plantoImage}.png`); 
   }, 1000);
 }
 
@@ -92,7 +93,7 @@ document.getElementById("comecar").addEventListener("click", function () {
   if (emExecucao == false && morto == false) {
 
     startCountdown();
-    waterDamage();
+    Damage();
     careDamage();
   } else if (morto || end) {
     window.location.reload();
@@ -112,7 +113,7 @@ function careDamage() {
   }, 1000);
 }
 
-function waterDamage() {
+function Damage() {
   waterInterval = setInterval(function () {
     if (plant.water > 0 && morto == false && end == false) {
       plant.water -= 10;
